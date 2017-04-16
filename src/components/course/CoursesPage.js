@@ -23,10 +23,10 @@ class CoursesPage extends React.Component {
     }
 
     onClickSave() {
-        this.props.dispatch(courseActions.createCourse(this.state.course));
+        this.props.createCourse(this.state.course);
     }
 
-    courseRow(course, index){
+    courseRow(course, index) {
         return <div key={index}>{course.title}</div>;
     }
 
@@ -54,7 +54,7 @@ class CoursesPage extends React.Component {
 }
 
 CoursesPage.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    createCourse: PropTypes.func.isRequired,
     courses: PropTypes.array.isRequired
 };
 
@@ -63,9 +63,13 @@ function mapStateToProps(state, ownProps) {
         courses: state.courses // compare to rootReducer in reducers/index.js naming
     };
 }
-// 
-// function mapDispatchToProps() {
-//     what actions do we want to expose from this component
-//}
 
-export default connect(mapStateToProps /*, mapDispatchToProps */)(CoursesPage); // omitting 'mapDispatchToProps' attaches a dispatch function
+
+function mapDispatchToProps(dispatch) {
+    //     what actions do we want to expose from this component
+    return {
+        createCourse: course => dispatch(courseActions.createCourse(course))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
